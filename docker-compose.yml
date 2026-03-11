@@ -27,7 +27,7 @@ services:
       - "6379:6379"
 
   api:
-    image: strongmemoryapi:1.0
+    image: renanteles/strongmemoryapi:1.0
     container_name: strongmemoryapi
     ports:
       - "8080:8080"
