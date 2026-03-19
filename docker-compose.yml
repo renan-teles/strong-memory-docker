@@ -15,17 +15,16 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
 
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
     restart: always
 
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 40s
-
+       test: ["CMD-SHELL", "mysql -uroot -proot -e 'SELECT 1'"]
+       interval: 10s
+       timeout: 5s
+       retries: 30
+       start_period: 180s
 
   redis:
     image: redis:7.0-alpine
