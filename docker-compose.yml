@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   db:
     image: mysql:8.0
     container_name: mysql
@@ -15,23 +14,22 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
 
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
     restart: always
 
     healthcheck:
-       test: ["CMD-SHELL", "mysql -uroot -proot -e 'SELECT 1'"]
-       interval: 10s
-       timeout: 5s
-       retries: 30
-       start_period: 180s
+      test: ["CMD-SHELL", "mysql -uroot -proot -e 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 180s
 
-  redis:
-    image: redis:7.0-alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-
+  #redis:
+  #image: redis:7.0-alpine
+  #container_name: redis
+  #ports:
+  #- "6379:6379"
 
   api:
     image: renanteles/strongmemoryapi:1.0
@@ -40,15 +38,17 @@ services:
     ports:
       - "8080:8080"
 
+    restart: always
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/strong_memory_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
+      #SPRING_REDIS_HOST: redis
+      #SPRING_REDIS_PORT: 6379
 
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_started
+      #redis:
+      #condition: service_started
