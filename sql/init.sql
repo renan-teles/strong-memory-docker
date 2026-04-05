@@ -2,11 +2,11 @@ SET NAMES utf8mb4;
 
 CREATE DATABASE  IF NOT EXISTS `strong_memory_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 USE `strong_memory_db`;
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- MySQL dump
 --
--- Host: 127.0.0.1    Database: strong_memory_db
+-- Database: strong_memory_db
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -207,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-04 13:15:44
+-- Dump completed
