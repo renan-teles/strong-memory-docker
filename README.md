@@ -99,7 +99,7 @@ Após subir o ambiente:
 
 <br/>
 
-## 🔐 Configuração de Ambiente
+## 🔐 Variáveis de Ambiente
 
 As configurações da aplicação são feitas através de variáveis de ambiente.
 
