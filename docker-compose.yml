@@ -1,79 +1,67 @@
 version: "3.8"
 
 services:
-  #redis:
-  #image: redis:7.0-alpine
-  #container_name: redis
-  #ports:
-  #- "6379:6379"
-
-  db:
+  mysql-db:
     image: mysql:8.0
-    container_name: strongmemorydb
-    #command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: strong-memory-mysql
 
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: strong_memory_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
 
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
 
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:3306"
 
     restart: always
 
     healthcheck:
-      test: ["CMD-SHELL", "mysql -uroot -proot -e 'SELECT 1'"]
+      test: ["CMD-SHELL", "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"]
       interval: 10s
       timeout: 5s
       retries: 30
-      start_period: 180s
+      start_period: 120s
 
-  api:
+  backend-api:
     image: renanteles/strongmemoryapi:1.0
-    container_name: strongmemoryapi
+    container_name: strong-memory-api
 
     ports:
-      - "8080:8080"
+      - "${API_PORT}:8080"
 
     restart: always
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/strong_memory_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      #SPRING_REDIS_HOST: redis
-      #SPRING_REDIS_PORT: 6379
-      CORS_ALLOWED_ORIGINS: http://localhost:4200
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
 
     depends_on:
-      db:
+      mysql-db:
         condition: service_healthy
-      #redis:
-      #condition: service_started
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 30
-      start_period: 180s
+      start_period: 120s
 
-  webapp:
+  frontend-web:
     image: renanteles/strongmemorywebapp:1.0
-    container_name: strongmemorywebapp
+    container_name: strong-memory-frontend
 
     ports:
-      - "4200:80"
+      - "${FRONTEND_PORT}:80"
 
     restart: always
 
     environment:
-      API_URL: http://localhost:8080/api
+      API_URL: ${API_URL}
 
     depends_on:
-      api:
-        #condition: service_started
+      backend-api:
         condition: service_healthy

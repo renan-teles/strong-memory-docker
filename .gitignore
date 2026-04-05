@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Node (caso tenha algo local)
+node_modules/
+
+# Docker (opcional)
+*.pid
