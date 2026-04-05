@@ -1,9 +1,15 @@
 version: "3.8"
 
 services:
+  #redis:
+  #image: redis:7.0-alpine
+  #container_name: redis
+  #ports:
+  #- "6379:6379"
+
   db:
     image: mysql:8.0
-    container_name: mysql
+    container_name: strongmemorydb
     #command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
     environment:
@@ -25,12 +31,6 @@ services:
       retries: 30
       start_period: 180s
 
-  #redis:
-  #image: redis:7.0-alpine
-  #container_name: redis
-  #ports:
-  #- "6379:6379"
-
   api:
     image: renanteles/strongmemoryapi:1.0
     container_name: strongmemoryapi
@@ -46,9 +46,34 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       #SPRING_REDIS_HOST: redis
       #SPRING_REDIS_PORT: 6379
+      CORS_ALLOWED_ORIGINS: http://localhost:4200
 
     depends_on:
       db:
         condition: service_healthy
       #redis:
       #condition: service_started
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 180s
+
+  webapp:
+    image: renanteles/strongmemorywebapp:1.0
+    container_name: strongmemorywebapp
+
+    ports:
+      - "4200:80"
+
+    restart: always
+
+    environment:
+      API_URL: http://localhost:8080/api
+
+    depends_on:
+      api:
+        #condition: service_started
+        condition: service_healthy
