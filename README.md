@@ -99,13 +99,27 @@ Após subir o ambiente:
 
 <br/>
 
-## 🔐 Configurações
+## 🔐 Configuração de Ambiente
 
-As variáveis principais estão definidas diretamente no `docker-compose.yml`, incluindo:
+As configurações da aplicação são feitas através de variáveis de ambiente.
 
-- Conexão com banco de dados
+O projeto utiliza um arquivo `.env`, que deve ser criado a partir do modelo disponível em:
+
+```bash
+.env.example
+```
+
+### 📌 Principais configurações:
+
+- Conexão com banco de dados (MySQL)
+- Credenciais da API
 - Configuração de CORS
+- Porta da aplicação
 - URL da API consumida pelo frontend
+
+### ⚠️ Importante
+
+O arquivo `.env` não é versionado por conter dados sensíveis.
 
 <br/>
 
@@ -152,7 +166,7 @@ Este ambiente foi criado com foco em:
 
 **Renan Lopes Lima Teles**
 
-- GitHub: https://github.com/seu-usuario
+- GitHub: https://github.com/renan-teles
 <!-- LinkedIn: https://linkedin.com/in/seu-perfil -->
 
 <br/>
