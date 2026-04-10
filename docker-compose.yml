@@ -1,6 +1,17 @@
 version: "3.8"
 
 services:
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    restart: always
+
+    ports:
+      - "${SPRING_REDIS_PORT}:6379"
+
+    volumes:
+      - redis_data:/data
+
   mysql-db:
     image: mysql:8.0
     container_name: strong-memory-mysql
@@ -37,11 +48,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
 
     depends_on:
       mysql-db:
         condition: service_healthy
+      redis:
+        condition: service_started
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
@@ -65,3 +80,6 @@ services:
     depends_on:
       backend-api:
         condition: service_healthy
+
+volumes:
+  redis_data:
