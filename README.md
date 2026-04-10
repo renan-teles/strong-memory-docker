@@ -8,7 +8,7 @@ Este projeto permite subir toda a aplicação (frontend + backend + banco de dad
 
 ## 🚀 Sobre o Projeto
 
-O **Strong Memory (SM)** é uma aplicação web gamificada voltada para o treinamento da memória muscular e cognitiva.
+O **SM** é uma aplicação web gamificada voltada para o treinamento da memória muscular e cognitiva.
 
 Este repositório contém a infraestrutura necessária para executar o sistema completo:
 
@@ -94,7 +94,7 @@ docker-compose up -d
 
 Após subir o ambiente:
 
-- Frontend: http://localhost:4200/auth/player/login
+- Frontend: http://localhost:4200/auth/player ou http://localhost:4200/app/game/start
 - Backend API: http://localhost:8080
 
 <br/>
